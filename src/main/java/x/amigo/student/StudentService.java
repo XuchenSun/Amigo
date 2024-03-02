@@ -1,16 +1,15 @@
 package x.amigo.student;
 
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.List;
 
 @Service
 public class StudentService {
 
+    static final XLogger LOGGER= XLoggerFactory.getXLogger(StudentService.class);
     private final StudentRepository studentRepository;
 
     @Autowired
@@ -23,4 +22,9 @@ public class StudentService {
     }
 
 
+    public void addNewStudent(Student student) {
+               // System.out.println(student);
+                LOGGER.info("add New Student"+student.toString());
+                studentRepository.save(student);
+    }
 }
