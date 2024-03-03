@@ -4,6 +4,8 @@ import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +37,7 @@ public class StudentService {
                 else
                 {
                     studentRepository.save(student);
-                    LOGGER.info("add New Student"+student.toString());
+                    LOGGER.info("add New Student "+student.toString());
                 }
     }
 
@@ -43,11 +45,25 @@ public class StudentService {
 
         boolean exists=studentRepository.existsById(studentId);
         if(!exists){
-            LOGGER.info("Student with id of "+studentId+"does not exist");
+            LOGGER.info("Student with id of "+studentId+" does not exist");
         }
         else {
             studentRepository.deleteById(studentId);
-            LOGGER.info("Student with id of "+studentId+"is deleted");
+            LOGGER.info("Student with id of "+studentId+" is deleted");
+        }
+    }
+
+    public void updateStudent(Long studentId, String name, String email, String dob) {
+        boolean exists=studentRepository.existsById(studentId);
+        if(!exists){
+            LOGGER.info("Student with id of "+studentId+" does not exist");
+        }
+        else {
+
+            Student student = new Student(studentId,name,email,LocalDate.parse(dob));
+
+            studentRepository.save(student);
+            LOGGER.info("Student with id of "+studentId+" is update");
         }
     }
 }
