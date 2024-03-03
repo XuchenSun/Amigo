@@ -57,6 +57,11 @@ public class StudentService {
         boolean exists=studentRepository.existsById(studentId);
         if(!exists){
             LOGGER.info("Student with id of "+studentId+" does not exist");
+            throw new IllegalStateException("Student with id of "+studentId+" does not exist");
+        }
+        else if(name.isEmpty() || email.isEmpty()||dob.isEmpty()){
+            LOGGER.info(" name is empty ");
+            throw new IllegalStateException("name, email, data of birth should not be empty");
         }
         else {
 
