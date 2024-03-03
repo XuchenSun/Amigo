@@ -5,6 +5,7 @@ import org.slf4j.ext.XLoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StudentService {
@@ -24,7 +25,29 @@ public class StudentService {
 
     public void addNewStudent(Student student) {
                // System.out.println(student);
-                LOGGER.info("add New Student"+student.toString());
-                studentRepository.save(student);
+
+                Optional<Student> studentOptional=studentRepository
+                        .findStudentByEmail(student.getEmail());
+                if(studentOptional.isPresent()){
+                    LOGGER.info("email taken");
+                    throw  new IllegalStateException("email taken");
+                }
+                else
+                {
+                    studentRepository.save(student);
+                    LOGGER.info("add New Student"+student.toString());
+                }
+    }
+
+    public void deleteStudent(Long studentId) {
+
+        boolean exists=studentRepository.existsById(studentId);
+        if(!exists){
+            LOGGER.info("Student with id of "+studentId+"does not exist");
+        }
+        else {
+            studentRepository.deleteById(studentId);
+            LOGGER.info("Student with id of "+studentId+"is deleted");
+        }
     }
 }
